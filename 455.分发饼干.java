@@ -9,19 +9,25 @@ import java.util.Arrays;
 // @lc code=start
 class Solution {
     public int findContentChildren(int[] g, int[] s) {
-        Arrays.sort(s);
+        int sLength = s.length;
+        int countChild = 0;
+        int sIndex = 0;
         Arrays.sort(g);
-        int count = 0, sIndex = 0;
+        Arrays.sort(s);
         for (int gi : g) {
-            while (sIndex < s.length && s[sIndex] < gi) {
+            while (sIndex < sLength && s[sIndex] < gi) {
                 sIndex++;
             }
-            if (sIndex < s.length) {
-                count++;
+            // condition in if cannot be s[sIndex] >= gi, because sIndex may ge
+            // sLength and s[sIndex] will throw exception
+            if (sIndex < sLength) {
+                countChild++;
                 sIndex++;
-            } else break;
+            } else {
+                break;
+            }
         }
-        return count;
+        return countChild;
     }
 }
 // @lc code=end
