@@ -7,19 +7,32 @@
 // @lc code=start
 class Solution {
     public boolean isSubsequence(String s, String t) {
-        int iS = 0;
-        int lenS = s.length();
-        // if there are plenty of S, maintain two array of lenS and iS, and
-        // test every S in one iteration
-        if (lenS == 0) return true;
-        for (char cT : t.toCharArray()) {
-            if (cT == s.charAt(iS)) {
-                iS++;
-                if (iS == lenS) 
-                    return true;
+        int lenT = t.length();
+        int[][] F = new int[lenT+1][26];
+        for (int i = 0; i < 26; i++) {
+            F[lenT][i] = lenT;
+        }
+        for (int i = lenT-1; i >= 0; i--) {
+            for (int j = 0; j < 26; j++) {
+                if (t.charAt(i) == 'a'+j) {
+                    F[i][j] = i;
+                } else {
+                    F[i][j] = F[i+1][j];
+                }
             }
         }
-        return false;
+
+        // process s
+        int i = 0;
+        for (char cS : s.toCharArray()) {
+            int dest = F[i][cS - 'a'];
+            if (dest == lenT) {
+                return false;
+            } else {
+                i = dest + 1;
+            }
+        }
+        return true;
     }
 }
 // @lc code=end
