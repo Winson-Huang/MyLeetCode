@@ -7,6 +7,7 @@
 // @lc code=start
 class Solution {
     public int maxSubArray(int[] nums) {
+        // this solution can be proven using dynamic programming
         int maxSum = nums[0], preSum = nums[0];
         for(int i = 1; i < nums.length; i++) {
             if (preSum < 0) {
