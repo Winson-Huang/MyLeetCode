@@ -17,15 +17,19 @@
  */
 class Solution {
     public ListNode reverseList(ListNode head) {
-        // iteration
-        ListNode pre = null, cur = head;
-        while (cur != null) {
-            ListNode next = cur.next;
-            cur.next = pre;
-            pre = cur;
-            cur = next;
-        }
-        return pre;
+        // recursion
+        if (head == null) return null;
+        return reverseListRecur(head);
+    }
+
+    ListNode reverseListRecur(ListNode head) {
+        if (head.next == null) {
+            return head;
+        } 
+        ListNode newHead = reverseList(head.next);
+        head.next.next = head; 
+        head.next = null;
+        return newHead;
     }
 }
 // @lc code=end
