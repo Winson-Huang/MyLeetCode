@@ -21,20 +21,13 @@ import java.util.Set;
  */
 public class Solution {
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        Set<ListNode> listNodesA = new HashSet<>();
-        ListNode tmpPtr = headA;
-        while (tmpPtr != null) {
-            listNodesA.add(tmpPtr);
-            tmpPtr = tmpPtr.next;
+        ListNode pA = headA, pB = headB;
+        if (pA == null || pB == null) return null;
+        while (pA != pB) {
+            pA = (pA == null ? headB : pA.next);
+            pB = (pB == null ? headA : pB.next);
         }
-        tmpPtr = headB;
-        while (tmpPtr != null) {
-            if (listNodesA.contains(tmpPtr)) {
-                return tmpPtr;
-            }
-            tmpPtr = tmpPtr.next;
-        }
-        return null;
+        return pA;
     }
 }
 // @lc code=end
