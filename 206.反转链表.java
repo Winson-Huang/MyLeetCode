@@ -18,12 +18,7 @@
 class Solution {
     public ListNode reverseList(ListNode head) {
         // recursion
-        if (head == null) return null;
-        return reverseListRecur(head);
-    }
-
-    ListNode reverseListRecur(ListNode head) {
-        if (head.next == null) {
+        if (head == null || head.next == null) {
             return head;
         } 
         ListNode newHead = reverseList(head.next);
