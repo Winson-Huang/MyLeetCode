@@ -1,4 +1,8 @@
+import java.util.Deque;
+import java.util.LinkedList;
+
 import javax.management.relation.Role;
+import javax.swing.tree.TreeNode;
 
 /*
  * @lc app=leetcode.cn id=111 lang=java
@@ -25,12 +29,28 @@ import javax.management.relation.Role;
 class Solution {
     public int minDepth(TreeNode root) {
         if (root == null) return 0;
-        int left = minDepth(root.left);
-        int right = minDepth(root.right);
-        if (left == 0 || right == 0) {
-            return left + right + 1;
+
+        Deque<TreeNode> deque = new LinkedList<>();
+        deque.offer(root);
+        int level = 1;
+        while (!deque.isEmpty()) {
+            int size = deque.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = deque.poll();
+                if (node.left == null && node.right == null) {
+                    return level;
+                } 
+                // only insert node that isn't null
+                if (node.left != null) {
+                    deque.offer(node.left);
+                } 
+                if (node.right != null) {
+                    deque.offer(node.right);
+                }
+            }
+            level++;
         }
-        return Math.min(left, right) + 1;
+        return level;
     }
 }
 // @lc code=end
