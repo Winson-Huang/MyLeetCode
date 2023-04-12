@@ -34,8 +34,9 @@ class Solution {
     public void findPath(TreeNode node, long currSum, int targetSum, Map<Long, Integer> prefix) {
         if (node == null) return;
         currSum += node.val;
-        // because path must contain 1 node at least, so must update ans before
-        // update prefix
+        // because path must contain 1 node at least 
+        // and targetSum may be zero, 
+        // so must update ans before update prefix
         ans += prefix.getOrDefault(currSum - targetSum, 0);
 
         prefix.put(currSum, prefix.getOrDefault(currSum, 0) + 1);
