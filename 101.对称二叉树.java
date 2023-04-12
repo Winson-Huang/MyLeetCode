@@ -24,10 +24,10 @@ import javax.swing.tree.TreeNode;
  */
 class Solution {
     public boolean isSymmetric(TreeNode root) {
-        return isMirror(root.left, root.right);
+        return isSymmetric(root.left, root.right);
     }
 
-    public boolean isMirror(TreeNode root1, TreeNode root2) {
+    public boolean isSymmetric(TreeNode root1, TreeNode root2) {
         if (root1 == null && root2 == null) {
             return true;
         } else if (root1 == null || root2 == null) {
@@ -35,8 +35,8 @@ class Solution {
         }
         if (
             root1.val == root2.val &&
-            isMirror(root1.left, root2.right) && 
-            isMirror(root1.right, root2.left)
+            isSymmetric(root1.left, root2.right) && 
+            isSymmetric(root1.right, root2.left)
         ) {
             return true;
         }
