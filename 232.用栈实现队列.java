@@ -6,47 +6,38 @@
 
 // @lc code=start
 class MyQueue {
-    class Node {
-        int x;
-        Node next;
-        public Node(int x, Node next) {
-            this.x = x;
-            this.next = next;
-        }
-    }
-    Node head = null;
-    Node tail = null;
+    Stack<Integer> input;
+    Stack<Integer> output;
 
     public MyQueue() {
-
+        input = new Stack<>();
+        output = new Stack<>();
     }
     
     public void push(int x) {
-        if (tail == null) {
-            head = tail = new Node(x, null);
-        } else {
-            tail.next = new Node(x, null);
-            tail = tail.next;
-        }
-        return;
+        input.push(x);
     }
     
     public int pop() {
-        int ans = head.x;
-        if (head.next == null) {
-            head = tail = null;
-        } else {
-            head = head.next;
+        inToOut();
+        return output.pop();
+    }
+
+    void inToOut() {
+        if (output.isEmpty()) {
+            while (!input.isEmpty()) {
+                output.push(input.pop());
+            }
         }
-        return ans;
     }
     
     public int peek() {
-        return head.x;
+        inToOut();
+        return output.peek();
     }
     
     public boolean empty() {
-        return head == null;
+        return input.isEmpty() && output.isEmpty();
     }
 }
 
