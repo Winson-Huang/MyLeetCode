@@ -1,7 +1,7 @@
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 /*
  * @lc app=leetcode.cn id=347 lang=java
@@ -16,41 +16,46 @@ class Solution {
         // QuickSort(N*logN), PriorityQueue(N*logk), Quickselect(N), BucketSort(N)
         // but BucketSort can only used in discrete values.
 
-        // BucketSort version
+        // PriorityQueue
+        class Node implements Comparable {
+            int num;
+            int freq;
+
+            public Node(int num, int freq) {
+                this.num = num;
+                this.freq = freq;
+            }
+            @Override
+            public int compareTo(Object o) {
+                return freq - ((Node)o).freq;
+            }
+        }
+
         // word frequence
         Map<Integer, Integer> numFrequence = new HashMap<>();
         for (int num : nums) {
             numFrequence.put(num, numFrequence.getOrDefault(num, 0) + 1);
         }
 
-        // build buckets
-        List<Integer>[] buckets = new ArrayList[nums.length + 1];
-        for (int key : numFrequence.keySet()) {
-            int freq = numFrequence.get(key);
-            if (buckets[freq] == null) {
-                buckets[freq] = new ArrayList<Integer>();
-            }
-            buckets[freq].add(key);
+        // default is minHeap
+        Queue<Node> pq = new PriorityQueue<>(k + 1);
+        Integer[] keys = numFrequence.keySet().toArray(new Integer[1]);
+        for (int i = 0; i < k; i++) {
+            pq.offer(new Node(keys[i], numFrequence.get(keys[i])));
+        }
+        for (int i = k; i < keys.length; i++) {
+            pq.offer(new Node(keys[i], numFrequence.get(keys[i])));
+            pq.poll();
         }
 
         // get topK
-        List<Integer> topK = new ArrayList<>();
-        for (int i = buckets.length - 1; i > 0 && topK.size() < k; i--) {
-            int need = k - topK.size();
-            if (buckets[i] == null) continue;
-            if (buckets[i].size() <= need) {
-                topK.addAll(buckets[i]);
-            } else {
-                topK.addAll(buckets[i].subList(0, need));
-            }
+        int[] ans = new int[pq.size()];
+        int i = 0;
+        for (Node node : pq) {
+            ans[i++] = node.num;
         }
 
-        int[] res = new int[k];
-        int i = 0;
-        for (int item : topK) {
-            res[i++] = item;
-        }
-        return res;
+        return ans;
     }
 }
 // @lc code=end
