@@ -12,7 +12,12 @@ import java.util.Map;
 // @lc code=start
 class Solution {
     public int[] topKFrequent(int[] nums, int k) {
-        // word  frequence
+        // topK and K-th Element can both solved by:
+        // QuickSort(N*logN), PriorityQueue(N*logk), Quickselect(N), BucketSort(N)
+        // but BucketSort can only used in discrete values.
+
+        // BucketSort version
+        // word frequence
         Map<Integer, Integer> numFrequence = new HashMap<>();
         for (int num : nums) {
             numFrequence.put(num, numFrequence.getOrDefault(num, 0) + 1);
