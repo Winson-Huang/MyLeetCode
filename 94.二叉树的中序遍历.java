@@ -1,5 +1,9 @@
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
+
+import javax.swing.tree.TreeNode;
 
 /*
  * @lc app=leetcode.cn id=94 lang=java
@@ -26,14 +30,21 @@ import java.util.List;
 class Solution {
     public List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> ans = new ArrayList<>();
-        traversal(root, ans);
+        if (root == null) return ans;
+
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        TreeNode curr = root;
+        while (curr != null || !stack.isEmpty()) {
+            if (curr != null) {
+                stack.push(curr);
+                curr = curr.left;
+            } else {
+                curr = stack.pop();
+                ans.add(curr.val);
+                curr = curr.right;
+            }
+        }
         return ans;
-    }
-    void traversal(TreeNode node, List<Integer> list) {
-        if (node == null) return;
-        traversal(node.left, list);
-        list.add(node.val);
-        traversal(node.right, list);
     }
 }
 // @lc code=end
