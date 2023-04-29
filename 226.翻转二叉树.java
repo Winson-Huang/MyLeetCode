@@ -1,5 +1,6 @@
-import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Queue;
+
 /*
  * @lc app=leetcode.cn id=226 lang=java
  *
@@ -25,25 +26,23 @@ import java.util.LinkedList;
 class Solution {
     public TreeNode invertTree(TreeNode root) {
         if (root == null) return null;
-        Deque<TreeNode> stack = new LinkedList<>();
-        stack.push(root);
-        while (!stack.isEmpty()) {
-            TreeNode node = stack.pop();
-            if (node != null) {
-                // preorder dfs
-                if (node.right != null) {
-                    stack.push(node.right);
-                }
-                if (node.left != null) {
-                    stack.push(node.left);
-                }
-                stack.push(node);
-                stack.push(null);
-            } else {
-                node = stack.pop();
+        Queue<TreeNode> que = new LinkedList<>();
+        que.offer(root);
+
+        while (!que.isEmpty()) {
+            for (int i = 0; i < que.size(); i++) {
+                TreeNode node = que.poll();
+
                 TreeNode tmp = node.left;
                 node.left = node.right;
                 node.right = tmp;
+
+                if (node.left != null) {
+                    que.offer(node.left);
+                }
+                if (node.right != null) {
+                    que.offer(node.right);
+                }
             }
         }
         return root;
