@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
@@ -29,24 +30,16 @@ class Node {
 
 class Solution {
     public List<Integer> preorder(Node root) {
-        List<Integer> answer = new LinkedList<>();
-        if (root == null) return answer;
-        Deque<Node> stack = new LinkedList<>();
-        stack.push(root);
-        while (!stack.isEmpty()) {
-            Node node = stack.pop();
-            if (node != null) {
-                for (int i = node.children.size() - 1; i >= 0; i--) {
-                    stack.push(node.children.get(i));
-                }
-                stack.push(node);
-                stack.push(null);
-            } else {
-                node = stack.pop();
-                answer.add(node.val);
-            }
+        List<Integer> ans = new ArrayList<>();
+        if (root == null) return ans;
+        preorderRecur(root, ans);
+        return ans;
+    }
+    void preorderRecur(Node node, List<Integer> ans) {
+        ans.add(node.val);
+        for (Node child : node.children) {
+            preorderRecur(child, ans);
         }
-        return answer;
     }
 }
 // @lc code=end
