@@ -1,3 +1,5 @@
+import java.util.Queue;
+
 /*
  * @lc app=leetcode.cn id=104 lang=java
  *
@@ -22,10 +24,24 @@
  */
 class Solution {
     public int maxDepth(TreeNode root) {
-        if (root == null) {
-            return 0;
+        if (root == null) return 0;
+        int depth = 0;
+        Queue<TreeNode> que = new LinkedList<>();
+        que.offer(root);
+        while (!que.isEmpty()) {
+            depth++;
+            int length = que.size();
+            for (int i = 0; i < length; i++) {
+                TreeNode node = que.poll();
+                if (node.left != null) {
+                    que.offer(node.left);
+                }
+                if (node.right != null) {
+                    que.offer(node.right);
+                }
+            }
         }
-        return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+        return depth;
     }
 }
 // @lc code=end
