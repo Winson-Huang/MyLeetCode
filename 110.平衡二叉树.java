@@ -32,12 +32,14 @@ class Solution {
             return 0;
         }
         int heightLeft = height(node.left);
+        if (heightLeft == -1) {
+            return -1;
+        }
         int heightRight = height(node.right);
-        if (
-            heightLeft == -1 ||
-            heightRight == -1 ||
-            Math.abs(heightLeft - heightRight) > 1
-        ) {
+        if (heightRight == -1) {
+            return -1;
+        }
+        if (Math.abs(heightLeft - heightRight) > 1) {
             return -1;
         }
         return Math.max(heightLeft, heightRight) + 1;
