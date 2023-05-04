@@ -25,6 +25,10 @@ class Solution {
         if (root == null) {
             return 0;
         }
+        return dfs(root);
+    }
+
+    public int dfs(TreeNode root) {
         int leftSum = 0;
         if (root.left == null) {
             leftSum = 0;
