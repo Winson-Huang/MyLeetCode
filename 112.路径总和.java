@@ -29,18 +29,19 @@ class Solution {
     }
     public void traversal(TreeNode node, int residualSum) {
         if (ans == true) return;
+        residualSum -= node.val;
         if (
             node.left == null && node.right == null && 
-            residualSum == node.val
+            residualSum == 0
         ) {
             ans = true;
             return;
         }
         if (node.left != null) {
-            traversal(node.left, residualSum - node.val);
+            traversal(node.left, residualSum);
         }
         if (node.right != null) {
-            traversal(node.right, residualSum - node.val);
+            traversal(node.right, residualSum);
         }
         return;
     }
