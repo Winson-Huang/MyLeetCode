@@ -1,5 +1,3 @@
-import javax.swing.tree.TreeNode;
-
 /*
  * @lc app=leetcode.cn id=617 lang=java
  *
@@ -24,8 +22,11 @@ import javax.swing.tree.TreeNode;
  */
 class Solution {
     public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
-        if (root1 == null || root2 == null) {
-            return root1 == null ? root2 : root1;
+        if (root1 == null) {
+            return root2;
+        }
+        if (root2 == null) {
+            return root1;
         }
         TreeNode left = mergeTrees(root1.left, root2.left);
         TreeNode right = mergeTrees(root1.right, root2.right);
