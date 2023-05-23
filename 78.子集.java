@@ -21,16 +21,13 @@ class Solution {
     }
 
     void backtracking(int[] nums, int index) {
-        if (index == nums.length) {
-            ans.add(new LinkedList<>(path));
-            return;
+        ans.add(new LinkedList<>(path));
+
+        for (int i = index; i < nums.length; i++) {
+            path.push(nums[i]);
+            backtracking(nums, i + 1);
+            path.pop();
         }
-
-        path.push(nums[index]);
-        backtracking(nums, index + 1);
-        path.pop();
-
-        backtracking(nums, index + 1);
     }
 }
 // @lc code=end
