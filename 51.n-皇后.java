@@ -17,7 +17,6 @@ class Solution {
 
     public List<List<String>> solveNQueens(int n) {
         this.board = new boolean[n][n];
-
         ans = new ArrayList<>();
         path = new LinkedList<>();
 
@@ -46,18 +45,17 @@ class Solution {
     }
 
     boolean isValid(int i, int j) {
-        for (int k = 0; k < board.length; k++) {
-            if (board[i][k]) return false;
-        }
-        for (int k = 0; k < board.length; k++) {
+        // no need to check row
+        // check column
+        for (int k = 0; k < i; k++) {
             if (board[k][j]) return false;
         }
-        int lefttop = Math.min(i, j);
-        int righttop = Math.min(i, board.length - 1 - j);
-        for (int k = i - lefttop, l = j - lefttop; k < board.length && l < board.length; k++, l++) {
+        // check lefttop
+        for (int k = i - 1, l = j - 1; k >=0 && l >= 0; k--, l--) {
             if (board[k][l]) return false;
         }
-        for (int k = i - righttop, l = j + righttop; k < board.length && l >= 0; k++, l--) {
+        // check righttop
+        for (int k = i - 1, l = j + 1; k >=0  && l < board.length; k--, l++) {
             if (board[k][l]) return false;
         }
         return true;
@@ -71,7 +69,6 @@ class Solution {
         sb.setCharAt(index, 'Q');
         return sb.toString();
     }
-
 
 }
 // @lc code=end
