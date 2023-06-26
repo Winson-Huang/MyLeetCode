@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,36 +13,40 @@ import java.util.List;
 class Solution {
     List<List<Integer>> ans;
     LinkedList<Integer> path;
+    int[] numbers;
 
     public List<List<Integer>> findSubsequences(int[] nums) {
         ans = new ArrayList<>();
         path = new LinkedList<>();
-        backtracking(nums, 0);
+        numbers = nums;
+        backtracking(0);
         return ans;
-
     }
 
-    void backtracking(int[] nums, int startIndex) {
+    void backtracking(int startIndex) {
         boolean[] used = new boolean[201];
+        Arrays.fill(used, false);
 
         if (path.size() > 1) {
             ans.add(new ArrayList<>(path));
         }
 
-        for (int i = startIndex; i < nums.length; i++) {
+        for (int i = startIndex; i < numbers.length; i++) {
             if (
-                used[nums[i] + 100] || 
-                (!path.isEmpty() && nums[i] < path.peekLast())
+                (!path.isEmpty() && path.peekLast() > numbers[i]) ||
+                used[numbers[i] + 100]
             ) {
                 continue;
             }
-            used[nums[i] + 100] = true;
-            path.offerLast(nums[i]);
-            backtracking(nums, i+1);
+            path.offerLast(numbers[i]);
+            used[numbers[i] + 100] = true;
+            backtracking(i+1);
             path.pollLast();
         }
-        
+
+        return;
     }
+
 }
 // @lc code=end
 
