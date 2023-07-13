@@ -10,25 +10,31 @@ import java.util.ArrayList;
 
 class Solution {
     private static final int boardLength = 9;
-    // use boolean array to record valid status
-    private boolean[][] column = new boolean[boardLength][boardLength];
-    private boolean[][] row = new boolean[boardLength][boardLength];
-    private boolean[][][] block = new boolean[3][3][boardLength];
+    // use one int variable to record valid status of one row/column/block
+    private int[] column = new int[boardLength];
+    private int[] row = new int[boardLength];
+    private int[][] block = new int[3][3];
 
     private ArrayList<int[]> emptyPos = new ArrayList<>();
     private int currentPos = 0;
     private char[][] board;
+
+    void flip(int i, int j, int digit) {
+        int flag = 1 << digit;
+        row[i] ^= flag;
+        column[j] ^= flag;
+        block[i / 3][j / 3] ^= flag;
+    }
     
     public void solveSudoku(char[][] board) {
         this.board = board;
 
+        // record positions that to be fill
         for (int i = 0; i < boardLength; i++) {
             for (int j = 0; j < boardLength; j++) {
                 if (board[i][j] != '.') {
                     int digit = board[i][j] - '0' - 1;
-                    row[i][digit] = true;
-                    column[j][digit] = true;
-                    block[i / 3][j / 3][digit] = true;
+                    flip(i, j, digit);
                 } else {
                     emptyPos.add(new int[]{i, j});
                 }
@@ -42,30 +48,33 @@ class Solution {
         if (currentPos == emptyPos.size()) {
             return true;
         }
-        int[] currentXy = emptyPos.get(currentPos);
-        for (int i = 0; i < boardLength; i++) {
-            if (
-                row[currentXy[0]][i] || column[currentXy[1]][i] ||
-                block[currentXy[0] / 3][currentXy[1] / 3][i]
-            ) {
-                continue;
+
+        int currentX = emptyPos.get(currentPos)[0];
+        int currentY = emptyPos.get(currentPos)[1];
+        // only 9 low bits in candidates may be one-bit, which represents a candidate digit
+        // other bits in candidates are zero-bit
+        int candidates = ~(row[currentX] | column[currentY] | block[currentX / 3][currentY / 3]) & 0x1FF;
+        // comparing to boolean array way, in this way only need to test vaild digits, 
+        // instead of 1-9
+        while (candidates != 0) {
+            // candidate only contains one "one-bit", which is the lowest one-bit in candidates
+            int candidate = (candidates & -candidates);
+            // for example, 00000100 - 1 = 00000011, which has two bits,
+            // and "two" is the index of one-bit in 00000100
+            int digit = Integer.bitCount(candidate - 1);
+
+            board[currentX][currentY] = (char)('0' + digit + 1);
+            flip(currentX, currentY, digit);
+            currentPos++;
+            if (backtracking()) {
+                return true;
             } else {
-                board[currentXy[0]][currentXy[1]] = (char)('0' + i + 1);
-                row[currentXy[0]][i] = true; 
-                column[currentXy[1]][i] = true;
-                block[currentXy[0] / 3][currentXy[1] / 3][i] = true;
-                currentPos++;
-                if (backtracking()) {
-                    return true;
-                } else {
-                    // no need to reset board[x][y] to '.', because
-                    // empty positions are stored in emptyPos
-                    row[currentXy[0]][i] = false; 
-                    column[currentXy[1]][i] = false;
-                    block[currentXy[0] / 3][currentXy[1] / 3][i] = false;
-                    currentPos--;
-                }
+                flip(currentX, currentY, digit);
+                currentPos--;
             }
+
+            // get rid of the lowest one-bit
+            candidates &= (candidates - 1);
         }
         return false;
     }
