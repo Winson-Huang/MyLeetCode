@@ -9,25 +9,28 @@ import java.util.Arrays;
 // @lc code=start
 class Solution {
     public int findContentChildren(int[] g, int[] s) {
-        int sLength = s.length;
-        int countChild = 0;
-        int sIndex = 0;
         Arrays.sort(g);
         Arrays.sort(s);
+
+        int happyChildrenCount = 0;
+        int sIndex = 0;
+
         for (int gi : g) {
-            while (sIndex < sLength && s[sIndex] < gi) {
+            while (sIndex < s.length && s[sIndex] < gi) {
                 sIndex++;
             }
-            // condition in if cannot be s[sIndex] >= gi, because sIndex may ge
-            // sLength and s[sIndex] will throw exception
-            if (sIndex < sLength) {
-                countChild++;
+
+            // only if there is cookie left, a child can be happy
+            // s[sIndex] >= gi is not right, may cause "out of range"
+            if (sIndex < s.length) {
+                happyChildrenCount++;
                 sIndex++;
             } else {
+                // run out of cookie, just finish it
                 break;
             }
         }
-        return countChild;
+        return happyChildrenCount;
     }
 }
 // @lc code=end
