@@ -11,18 +11,16 @@ class Solution {
 
         int count = 1;
         int prediff = 0;
-        int lastNum = nums[0];
+        int curdiff = 0;
 
         for (int j = 1; j < nums.length; j++) {
+            curdiff = nums[j] - nums[j - 1];
             if (
-                prediff <= 0 && nums[j] - lastNum > 0 ||
-                prediff >= 0 && nums[j] - lastNum < 0
+                prediff <= 0 && curdiff > 0 ||
+                prediff >= 0 && curdiff < 0
             ) {
                 count++;
-                prediff = nums[j] - lastNum;
-                lastNum = nums[j];
-            } else {
-                lastNum = nums[j];
+                prediff = curdiff;
             }
         }
 
