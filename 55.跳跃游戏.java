@@ -7,26 +7,14 @@
 // @lc code=start
 class Solution {
     public boolean canJump(int[] nums) {
-        int i = nums.length - 2;
-        while (i >= 0) {
-            if (nums[i] > 0) {
-                i--;
-                continue;
-            }
-
-            int need = 1;
-            while (i >= 0 && nums[i] < need) {
-                i--;
-                need++;
-            }
-            if (i >= 0) {
-                // a legal element is found
-                continue;
-            } else {
-                return false;
-            }
+        int cover = nums[0];
+        int i = 0;
+        while (i <= cover) {
+            cover = Math.max(cover, i + nums[i]);
+            if (cover >= nums.length - 1) return true;
+            i++;
         }
-        return true;
+        return false;
     }
 }
 // @lc code=end
