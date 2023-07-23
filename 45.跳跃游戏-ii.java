@@ -6,27 +6,23 @@
 
 // @lc code=start
 class Solution {
+
+    // leetcode official is good enough
     public int jump(int[] nums) {
-        if (nums.length == 1) return 0;
 
         int jumpCount = 0;
         int lastCover = 0;
         int cover = 0;
 
-        // the iterations are used to get cover of 1,2,... jumps, but not 
-        // zero jump, so shortcut in first line is necessary
-        for (int i = 0; i <= lastCover; i++) {
+        for (int i = 0; i < nums.length - 1; i++) {
             cover = Math.max(cover, i + nums[i]);
 
             if (i == lastCover) {
                 jumpCount++;
                 lastCover = cover;
-                if (lastCover >= nums.length - 1) return jumpCount;
             }
         }
-        // if cannot arrive, return -1
-        // this case wont appear according to description
-        return -1;
+        return jumpCount;
 
     }
 }
