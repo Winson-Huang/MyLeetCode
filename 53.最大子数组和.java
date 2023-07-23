@@ -7,33 +7,33 @@
 // @lc code=start
 class Solution {
     class Status {
-        int lSum;
-        int rSum;
-        int mSum; // max sum
-        int iSum; // sum of All
-        public Status(int lSum, int rSum, int mSum, int iSum) {
-            this.lSum = lSum;
-            this.rSum = rSum;
-            this.mSum = mSum;
-            this.iSum = iSum;
-        }
-        public Status() {}
+        int lSum; // max sum of subseq start from left
+        int rSum; // max sum of subseq end in right
+        int mSum; // max sum of subseq
+        int aSum; // sum of all elements
     }
 
-    Status get(int[] arr, int l, int r) {
-        if (l==r) {
-            return new Status(arr[l], arr[l], arr[l], arr[l]);
+    Status get(int[] nums, int left, int right) {
+        Status ss = new Status();
+        if (left == right) {
+            ss.lSum = ss.rSum = ss.mSum = ss.aSum = nums[left];
+            return ss;
         }
-        int m = (l + r) / 2;
-        Status statusL = get(arr, l, m);
-        Status statusR = get(arr, m+1, r);
-        Status statusAll = new Status();
-        statusAll.iSum = statusL.iSum + statusR.iSum;
-        statusAll.lSum = Math.max(statusL.lSum, statusL.iSum + statusR.lSum);
-        statusAll.rSum = Math.max(statusR.rSum, statusR.iSum + statusL.rSum);
-        statusAll.mSum = Math.max(Math.max(statusL.mSum, statusR.mSum), statusL.rSum + statusR.lSum);
-        return statusAll;
+
+        // in this case, left + right wont overflow, 
+        // but it's better to write as left + (right - left) / 2
+        int mid = (left + right) >> 1;
+
+        Status sleft = get(nums, left, mid);
+        Status sright = get(nums, mid + 1, right);
+
+        ss.lSum = Math.max(sleft.lSum, sleft.aSum + sright.lSum);
+        ss.rSum = Math.max(sright.rSum, sright.aSum + sleft.rSum);
+        ss.mSum = Math.max(sleft.rSum + sright.lSum, Math.max(sleft.mSum, sright.mSum));
+        ss.aSum = sleft.aSum + sright.aSum;
+        return ss;
     }
+
     public int maxSubArray(int[] nums) {
         return get(nums, 0, nums.length - 1).mSum;
     }
