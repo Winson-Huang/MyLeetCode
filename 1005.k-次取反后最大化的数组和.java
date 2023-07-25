@@ -25,20 +25,19 @@ class Solution {
         // step 2, if really run out of k, just add left elements.
         // Or if all elements are positive now and still have k, 
         // pick the minimium value and process, then add left elements.
-        if (k == 0) {
-            while (i < nums.length) {
-                maxSum += nums[i];
-                i++;
-            }
-        } else {
+
+        // so, add left elements can move out of Cond.
+
+        if (k != 0) {
             int minValue = Arrays.stream(nums).summaryStatistics().getMin();
             if (k % 2 == 1) {
                 maxSum -= 2 * minValue;
             } 
-            while (i < nums.length) {
-                maxSum += nums[i];
-                i++;
-            }
+        }
+
+        while (i < nums.length) {
+            maxSum += nums[i];
+            i++;
         }
         return maxSum;
     }
