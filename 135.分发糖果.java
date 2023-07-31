@@ -8,28 +8,33 @@
 class Solution {
     public int candy(int[] ratings) {
         // According to description, ratings.length > 0 
-
-        // calculate minimal candy only considering from left to right
-        int[] leftMins = new int[ratings.length];
-        leftMins[0] = 1;
-        for (int i = 1; i < leftMins.length; i++) {
-            if (ratings[i] > ratings[i - 1]) {
-                leftMins[i] = leftMins[i - 1] + 1;
-            } else {
-                leftMins[i] = 1;
-            }
-        }
-
-        int sum = Math.max(1, leftMins[leftMins.length - 1]);
+        int sum = 1;
         int candy = 1;
-        for (int i = leftMins.length - 2; i >= 0; i--) {
-            if (ratings[i] > ratings[i + 1]) {
-                candy++;
+        int incLen = 1;
+        int decLen = 0;
+
+        for (int i = 1; i < ratings.length; i++) {
+            if (ratings[i] >= ratings[i - 1]) {
+                decLen = 0;
+                if (ratings[i] == ratings[i - 1]) {
+                    candy = 1;
+                } else {
+                    candy++;
+                }
+                incLen = candy;
+                sum += candy;
             } else {
+                decLen++;
+                if (decLen == incLen) {
+                    decLen++;
+                }
+                sum += decLen;
+
                 candy = 1;
             }
-            sum += Math.max(candy, leftMins[i]);
+
         }
+
 
         return sum;
     }
