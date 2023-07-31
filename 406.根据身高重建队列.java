@@ -13,16 +13,18 @@ import java.util.List;
 class Solution {
     public int[][] reconstructQueue(int[][] people) {
         Arrays.sort(people, new Comparator<int[]>() {
-            @Override
-            public int compare(int[] o1, int[] o2) {
-                return o1[0] == o2[0] ? o1[1] - o2[1] : o2[0] - o1[0];
+            public int compare(int[] p1, int[] p2) {
+                return p1[0] == p2[0] ? p1[1] - p2[1] : p2[0] - p1[0];
             }
         });
+
+        // faster than LinkedList
         List<int[]> queue = new ArrayList<>();
-        for (int[] ip : people) {
-            queue.add(ip[1], ip);
+        for (int[] oneperson: people) {
+            queue.add(oneperson[1], oneperson);
         }
-        return queue.toArray(new int[queue.size()][]);
+
+        return queue.toArray(new int[people.length][2]);
     }
 }
 // @lc code=end
