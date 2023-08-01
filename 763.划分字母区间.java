@@ -12,32 +12,27 @@ class Solution {
     public List<Integer> partitionLabels(String s) {
         // lastIndex-1 is the last index of a char
         // if s doesnot contains some char, these char's lastIndex is 0
-        int[] lastIndexOfChar = new int[26];
-        for (int i = 0; i < 26; i++) {
-            lastIndexOfChar[i] = 0;
-        }
-
-        // scan the string
+        // no need to fill zero, as it is default initial value
+        // scan the String to fill lastIndex
+        int[] lastIndex = new int[26];
         for (int i = 0; i < s.length(); i++) {
-            lastIndexOfChar[s.charAt(i) - 'a'] = i + 1;
+            lastIndex[s.charAt(i) - 'a'] = i + 1;
         }
 
-        // get result 
-        List<Integer> sliceLens = new ArrayList<>();
+        // get slices
+        List<Integer> sliceLen = new ArrayList<>();
         int leftIndex = 0;
-        int rightIndex = lastIndexOfChar[s.charAt(0) - 'a'];
+        int rightIndex = lastIndex[s.charAt(0) - 'a'];
         for (int i = 1; i < s.length(); i++) {
             if (i == rightIndex) {
-                sliceLens.add(rightIndex - leftIndex);
+                sliceLen.add(rightIndex - leftIndex);
                 leftIndex = i;
             }
-            rightIndex = Math.max(
-                rightIndex,
-                lastIndexOfChar[s.charAt(i) - 'a']
-            );
+            rightIndex = Math.max(rightIndex, lastIndex[s.charAt(i) - 'a']);
         }
-        sliceLens.add(rightIndex - leftIndex);
-        return sliceLens;
+
+        sliceLen.add(rightIndex - leftIndex);
+        return sliceLen;
     }
 }
 // @lc code=end
