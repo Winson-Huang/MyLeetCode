@@ -7,35 +7,20 @@
 // @lc code=start
 class Solution {
     public int monotoneIncreasingDigits(int n) {
-        // 从右往左处理，width 表示结果中右边数字 9 的数量
-        int n_store = n;
-        int widthNine = 0;
+        // recursion base case
+        if (n == 0) return 0;
 
-        int prePos = n % 10;
+        // recursion
+        int r = n % 10;
         n /= 10;
-        int curPos;
-
-        // 迭代中处理的是从右往左第 i 位数字
-        // 对于数字 123，prePos 是 3，i = 1 表示处理 2
-        int i = 1;
-        while (n > 0) {
-            curPos = n % 10;
-            if (curPos > prePos) {
-                curPos--;
-                widthNine = i;
-            }
-            prePos = curPos;
-            i++;
-            n /= 10;
-        }
-
-        if (widthNine == 0) {
-            return n_store;
+        int l = n % 10;
+        int ans = monotoneIncreasingDigits(l > r ? n - 1 : n);
+        if (n > ans) {
+            ans = ans * 10 + 9;
         } else {
-            int MOD = (int) Math.pow(10, widthNine);
-            return n_store - (n_store % MOD) - 1;
+            ans = ans * 10 + r;
         }
-
+        return ans;
     }
 }
 // @lc code=end
