@@ -10,20 +10,21 @@ import java.util.Arrays;
 
 class Solution {
     public int findTargetSumWays(int[] nums, int target) {
-        int length = nums.length;
-        // states is array of state represented by bit string
-        // for example dp[0000] means all 4 elements are negative
-        int[] states = new int[1 << length];
-        states[0] = -Arrays.stream(nums).sum();
-        int count = 0;
-        if (states[0] == target) count++;
-
-        for (int i = 1; i < states.length; i++) {
-            states [i] = states[i & (i - 1)] + 2 * nums[Integer.numberOfTrailingZeros(i)];
-            if (states[i] == target) count++;
+        int sum = Arrays.stream(nums).sum();
+        int negAbs = (sum - target) / 2;
+        if (negAbs < 0 || negAbs * 2 != (sum - target)) {
+            return 0;
         }
 
-        return count;
+        int[] dp = new int[negAbs + 1];
+        dp[0] = 1;
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = negAbs; j >= nums[i]; j--) {
+                dp[j] = dp[j] + dp[j - nums[i]];
+            }
+        }
+
+        return dp[negAbs];
     }
 }
 // @lc code=end
