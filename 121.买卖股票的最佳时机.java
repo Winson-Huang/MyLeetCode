@@ -7,16 +7,17 @@
 // @lc code=start
 class Solution {
     public int maxProfit(int[] prices) {
-        int minPrice = prices[0];
-        int maxProfit = 0;
-        for(int i = 1; i < prices.length; i++) {
-            if (prices[i] - minPrice > maxProfit) {
-                maxProfit = prices[i] - minPrice;
-            } else if (prices[i] < minPrice) {
-                minPrice = prices[i];
-            }
+        // dp[0]: do not hold
+        // dp[1]: hold
+        int[] dp = new int[2];
+        dp[0] = 0;
+        dp[1] = -prices[0];
+
+        for (int i = 1; i < prices.length; i++) {
+            dp[0] = Math.max(dp[0], dp[1] + prices[i]);
+            dp[1] = Math.max(-prices[i], dp[1]);
         }
-        return maxProfit;
+        return dp[0];
     }
 }
 // @lc code=end
