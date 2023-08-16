@@ -5,31 +5,31 @@
  */
 
 // @lc code=start
+
+import java.util.Arrays;
+
 class Solution {
     public boolean isSubsequence(String s, String t) {
-        int lenT = t.length();
-        int[][] F = new int[lenT+1][26];
-        for (int i = 0; i < 26; i++) {
-            F[lenT][i] = lenT;
-        }
-        for (int i = lenT-1; i >= 0; i--) {
+        int[][] F = new int[t.length() + 1][26];
+        Arrays.fill(F[t.length()], t.length());
+        for (int i = t.length() - 1; i >= 0; i--) {
             for (int j = 0; j < 26; j++) {
-                if (t.charAt(i) == 'a'+j) {
+                if (t.charAt(i) == 'a' + j) {
                     F[i][j] = i;
                 } else {
-                    F[i][j] = F[i+1][j];
+                    F[i][j] = F[i + 1][j];
                 }
             }
         }
 
         // process s
         int i = 0;
-        for (char cS : s.toCharArray()) {
-            int dest = F[i][cS - 'a'];
-            if (dest == lenT) {
+        for (char sChar : s.toCharArray()) {
+            i = F[i][sChar - 'a'];
+            if (i == t.length()) {
                 return false;
             } else {
-                i = dest + 1;
+                i++;
             }
         }
         return true;
