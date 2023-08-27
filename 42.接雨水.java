@@ -16,15 +16,20 @@ class Solution {
 
         int sum = 0;
         for (int i = 0; i < height.length; i++) {
-            while (pointer > 0 && height[stack[pointer]] <= height[i]) {
-                sum += (Math.min(height[stack[pointer - 1]], height[i])
-                        - height[stack[pointer]])
-                        * (i - 1 - stack[pointer - 1]);
-                pointer--;
+            while (pointer >= 0 && height[stack[pointer]] <= height[i]) {
+                // pop out
+                int top = stack[pointer--];
+                // before poping out there is only one element
+                if (pointer == -1) {
+                    break;
+                }
+
+                // else, need to add rain water to sum
+                int topLeft = stack[pointer];
+                sum += (Math.min(height[topLeft], height[i]) - height[top])
+                        * (i - 1 - topLeft);
             }
-            if (pointer == 0 && height[stack[pointer]] <= height[i]) {
-                pointer--;
-            }
+            // push in
             stack[++pointer] = i;
         }
 
