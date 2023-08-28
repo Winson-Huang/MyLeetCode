@@ -12,26 +12,21 @@ import java.util.Deque;
 
 class Solution {
     public int largestRectangleArea(int[] heights) {
-        Deque<Integer> stackRight = new ArrayDeque<>();
+        // monotonic stack one time scan
+
+        Deque<Integer> stack = new ArrayDeque<>();
         int[] indexRight = new int[heights.length];
         Arrays.fill(indexRight, heights.length);
-        for (int i = 0; i < heights.length; i++) {
-            while (!stackRight.isEmpty() && heights[stackRight.peek()] > heights[i]) {
-                indexRight[stackRight.peek()] = i;
-                stackRight.pop();
-            }
-            stackRight.push(i);
-        }
-
-        Deque<Integer> stackLeft = new ArrayDeque<>();
         int[] indexLeft = new int[heights.length];
         Arrays.fill(indexLeft, -1);
-        for (int i = heights.length - 1; i >= 0; i--) {
-            while (!stackLeft.isEmpty() && heights[stackLeft.peek()] > heights[i]) {
-                indexLeft[stackLeft.peek()] = i;
-                stackLeft.pop();
+
+        for (int i = 0; i < heights.length; i++) {
+            while (!stack.isEmpty() && heights[stack.peek()] > heights[i]) {
+                indexRight[stack.peek()] = i;
+                stack.pop();
             }
-            stackLeft.push(i);
+            indexLeft[i] = stack.isEmpty() ? -1 : stack.peek();
+            stack.push(i);
         }
 
         int maxArea = 0;
