@@ -27,7 +27,9 @@ class Solution {
     int ans = 0;
     public int pathSum(TreeNode root, int targetSum) {
         Map<Long, Integer> prefix = new HashMap<>();
+        // "no node" is one of prefixs
         prefix.put(0L, 1);
+
         findPath(root, 0, targetSum, prefix);
         return ans;
     }
