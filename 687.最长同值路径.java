@@ -23,33 +23,41 @@
 class Solution {
     int ans;
     public int longestUnivaluePath(TreeNode root) {
-        ans = 0;
         dfs(root);
         return ans;
     }
 
-    public int dfs(TreeNode node) {
+    /**
+     * search the tree to find longest path from node to its subtree
+     * that all node value in this path are same
+     * @param node
+     * @return the length of this longest path
+     */
+    int dfs(TreeNode node) {
         if (node == null) {
             return 0;
         }
-        int left = dfs(node.left);
-        int right = dfs(node.right);
 
-        if (node.left != null && node.left.val == node.val) {
-            left++;
+        int leftLen = dfs(node.left);
+        int rightLen = dfs(node.right);
+
+        if (node.left != null && node.val == node.left.val) {
+            leftLen++;
         } else {
-            left = 0;
+            leftLen = 0;
         }
 
-        if (node.right!= null && node.right.val == node.val) {
-            right++;
+        if (node.right != null && node.val == node.right.val) {
+            rightLen++;
         } else {
-            right = 0;
+            rightLen = 0;
         }
 
-        ans = Math.max(left + right, ans);
-        return Math.max(left, right);
+        ans = Math.max(leftLen + rightLen, ans);
+
+        return Math.max(leftLen, rightLen);
     }
+
 }
 // @lc code=end
 
