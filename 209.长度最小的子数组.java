@@ -7,16 +7,12 @@
 // @lc code=start
 class Solution {
     public int minSubArrayLen(int target, int[] nums) {
-        int start = 0, end = -1;
+        int start = 0;
         int minLen = nums.length + 1;
         int sum = 0;
-        while (end < nums.length) {
-            if (sum < target) {
-                if (end + 1 < nums.length) {
-                    sum += nums[end + 1];
-                }
-                end++;
-            } else if (sum >= target) {
+        for (int end = 0; end < nums.length; end++) {
+            sum += nums[end];
+            while (sum >= target) {
                 minLen = Math.min(minLen, end - start + 1);
                 sum -= nums[start];
                 start++;
