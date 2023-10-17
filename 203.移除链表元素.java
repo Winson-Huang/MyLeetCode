@@ -20,6 +20,7 @@ class Solution {
         ListNode dummyNode = new ListNode(0, head);
         ListNode tmp = dummyNode;
         while (tmp.next != null) {
+            // 两个分支都不会使得 tmp 为 null
             if (tmp.next.val == val) {
                 tmp.next = tmp.next.next;
             } else {
