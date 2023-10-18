@@ -17,22 +17,24 @@
  */
 class Solution {
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        // if need delete an item, have a preHead is helpful
-        ListNode preHead = new ListNode(-1, head);
+        // if need delete an item, having a dummy is helpful
+        ListNode dummy = new ListNode(-1, head);
 
         // let probeTail go ahead n item, then probeTail and preTodelete go ahead
         // simultaneously, when probeTail in tail, preTodelete.next is to be deleted
-        ListNode probeTail = preHead;
+        ListNode probeTail = dummy;
         for (int i = 0; i < n; i++) {
             probeTail = probeTail.next;
         }
-        ListNode preTodelete = preHead;
+
+        ListNode tmpPre = dummy;
         while (probeTail.next != null) {
             probeTail = probeTail.next;
-            preTodelete = preTodelete.next;
+            tmpPre = tmpPre.next;
         }
-        preTodelete.next = preTodelete.next.next;
-        return preHead.next;
+        tmpPre.next = tmpPre.next.next;
+
+        return dummy.next;
     }
 }
 // @lc code=end
