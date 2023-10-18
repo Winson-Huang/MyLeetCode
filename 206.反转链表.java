@@ -17,15 +17,15 @@
  */
 class Solution {
     public ListNode reverseList(ListNode head) {
-        // recursion
-        // refer to leetcode official
-        if (head == null || head.next == null) {
-            return head;
-        } 
-        ListNode newHead = reverseList(head.next);
-        head.next.next = head; 
-        head.next = null;
-        return newHead;
+        // iteration
+        ListNode pre = null, cur = head;
+        while (cur != null) {
+            ListNode tmp = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = tmp;
+        }
+        return pre;
     }
 }
 // @lc code=end
