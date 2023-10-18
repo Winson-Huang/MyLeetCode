@@ -18,6 +18,7 @@
 class Solution {
     public ListNode reverseList(ListNode head) {
         // recursion
+        // refer to leetcode official
         if (head == null || head.next == null) {
             return head;
         } 
