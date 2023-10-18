@@ -1,4 +1,5 @@
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /*
@@ -21,39 +22,14 @@ import java.util.Set;
  */
 public class Solution {
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        // 代码随想录解法，不如双指针优雅
-        int lenA = 0;
-        int lenB = 0;
-        ListNode curA = headA;
-        while (curA != null) {
-            lenA++;
-            curA = curA.next;
+        // two pointers, leetcode official
+        ListNode pA = headA;
+        ListNode pB = headB;
+        while (pA != pB) {
+            pA = (pA == null ? headB : pA.next);
+            pB = (pB == null ? headA : pB.next);
         }
-        ListNode curB = headB;
-        while (curB != null) {
-            lenB++;
-            curB = curB.next;
-        }
-        
-        if (lenA < lenB) {
-            int tmp = lenA;
-            lenA = lenB;
-            lenB = tmp;
-            ListNode tmpHead = headA;
-            headA = headB;
-            headB = tmpHead;
-        }
-
-        curA = headA;
-        curB = headB;
-        for (int i = 0; i < lenA - lenB; i++) {
-            curA = curA.next;
-        }
-        while (curA != curB) {
-            curA = curA.next;
-            curB = curB.next;
-        }
-        return curA;
+        return pA;
     }
 }
 // @lc code=end
