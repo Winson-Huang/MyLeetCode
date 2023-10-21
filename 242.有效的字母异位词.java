@@ -9,27 +9,30 @@ import java.util.Arrays;
 // @lc code=start
 class Solution {
     public boolean isAnagram(String s, String t) {
-        int[] statistics = new int[26];
-        Arrays.fill(statistics, 0);
+        int[] stats = new int[26];
 
-        for (char C : s.toCharArray()) {
-            statistics[C - 'a'] += 1;
+        for (char c : s.toCharArray()) {
+            stats[c - 'a']++;
         }
 
-        for (char C : t.toCharArray()) {
-            statistics[C - 'a'] -= 1;
+        for (char c : t.toCharArray()) {
+            stats[c - 'a']--;
         }
 
-        for (int tmp : statistics) {
-            if (tmp != 0) return false;
+        boolean answer = true;
+        for (int stat : stats) {
+            if (stat != 0) {
+                answer = false;
+                break;
+            }
         }
 
-        return true;
-        
+        return answer;
+
         // if String contains unicode character, int array can be 
-        // replaced by a HashTable, key is int (to store Code Point). 
+        // replaced by a HashMap, key is int (to store Code Point). 
         // String.codePoints return a IntStream, use this stream to 
-        // construct HashTable
+        // insert into HashMap
     }
 }
 // @lc code=end
