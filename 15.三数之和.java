@@ -1,9 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /*
  * @lc app=leetcode.cn id=15 lang=java
@@ -17,29 +15,41 @@ class Solution {
         List<List<Integer>> ans = new LinkedList<>();
 
         Arrays.sort(nums);
+
         for (int i = 0; i < nums.length - 2; i++) {
-            int left = i + 1, right = nums.length - 1;
-            if (nums[i] > 0) return ans;
-
-            if (i != 0 && nums[i-1] == nums[i]) {
+            if (nums[i] > 0) {
+                break;
+            } else if (i > 0 && nums[i - 1] == nums[i]) {
                 continue;
-            }
-            while (left < right) {
-                int sum = nums[i] + nums[left] + nums[right];
-                if (sum < 0) {
-                    left++;
-                } else if (sum > 0) {
-                    right--;
-                } else {
-                    ans.add(Arrays.asList(nums[i], nums[left], nums[right]));
-                    while (left < right && nums[right-1] == nums[right]) right--;
-                    while (left < right && nums[left] == nums[left + 1]) left++;
+            } else {
+                int j = i + 1, k = nums.length - 1;
+                while (j < k) {
+                    int sum = nums[i] + nums[j] + nums[k];
+                    if (sum < 0) {
+                        j++;
+                    } else if (sum > 0) {
+                        k--;
+                    } else {
+                        ans.add(Arrays.asList(nums[i], nums[j], nums[k]));
+                        // this is a shortcut
+                        if (nums[j] == nums[k]) {
+                            break;
+                        }
 
-                    left++;
-                    right--;
+                        while (j < k && nums[j] == nums[j + 1]) {
+                            j++;
+                        }
+                        j++;
+
+                        while (j < k && nums[k - 1] == nums[k]) {
+                            k--;
+                        }
+                        k--;
+                    }
                 }
             }
         }
+
         return ans;
     }
 }
