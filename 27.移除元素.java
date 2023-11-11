@@ -8,12 +8,15 @@
 class Solution {
     public int removeElement(int[] nums, int val) {
         int indexToCover = 0;
-
         for (int i = 0; i < nums.length; i++) {
-            if (nums[i] != val) {
-                nums[indexToCover++] = nums[i];
+            if (nums[i] == val) {
+                continue;
+            } else {
+                nums[indexToCover] = nums[i];
+                indexToCover++;
             }
         }
+
         return indexToCover;
     }
 }
