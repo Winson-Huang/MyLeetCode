@@ -6,38 +6,49 @@
 
 // @lc code=start
 class Solution {
+    // this problem is interesting, refer to leetcode official for
+    // more solutions
     public String reverseWords(String s) {
         int sLen = s.length();
-        int i = sLen - 1;
-        // s contains at least 1 word, find first word
+
+        // to store an temporary extra space
+        char[] result = new char[sLen + 1];
+
+        // find first non-space char in s, then for s[first:],
+        // every word is followed by 1 or more space
         int first = 0;
-        while (s.charAt(first) == ' ') first++;
-
-        char[] ans = new char[sLen + 1];
-        int j = 0; // j will grow to last non-space in ans
-
-        while (i >= first) {
-            int indexToSkipSpace = i;
-            while (indexToSkipSpace >=0 && s.charAt(indexToSkipSpace) == ' ') {
-                indexToSkipSpace--;
-            }
-
-            int indexToGetWord = indexToSkipSpace;
-            while (indexToGetWord >= 0 && s.charAt(indexToGetWord) != ' ') {
-                indexToGetWord--;
-            }
-
-            for (int k = indexToGetWord+1; k <= indexToSkipSpace; k++) {
-                ans[j++] = s.charAt(k);
-            }
-            ans[j++] = ' ';
-
-            i = indexToGetWord;
+        while (s.charAt(first) == ' ') {
+            first++;
         }
 
-        j--;
 
-        return new String(ans, 0, j);
+
+        int i = sLen - 1;
+        int j = 0;
+        while (i >= first) {
+            // for a word followed by 1 or more space,
+            // find start and end of the word
+            int wordEnd = i;
+            while (wordEnd >=0 && s.charAt(wordEnd) == ' ') {
+                wordEnd--;
+            }
+            int wordStart = wordEnd;
+            while (wordStart >=0 && s.charAt(wordStart) != ' ') {
+                wordStart--;
+            }
+
+            // copy a word from s to result
+            for (int k = wordStart + 1; k <= wordEnd; k++) {
+                result[j++] = s.charAt(k);
+            }
+            result[j++] = ' ';
+
+            i = wordStart;
+        }
+
+        // from result[] build a string
+        j--;
+        return new String(result, 0, j);
 
     }
 }
