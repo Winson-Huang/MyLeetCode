@@ -7,24 +7,24 @@
 // @lc code=start
 class Solution {
     public String reverseStr(String s, int k) {
-        char[] arr = s.toCharArray();
+        char[] sCharArr = s.toCharArray();
         int i = 0;
-        for (i = 0; i + 2 * k - 1 < arr.length; i = i + 2 * k) {
-            reverse(arr, i, k);
+        for (i = 0; i + 2 * k <= sCharArr.length; i += 2 * k) {
+            reverseSegment(sCharArr, i, k);
         }
-        if (i + k - 1 < arr.length) {
-            reverse(arr, i, k);
+        if (i + k <= sCharArr.length) {
+            reverseSegment(sCharArr, i, k);
         } else {
-            reverse(arr, i, arr.length - i);
+            reverseSegment(sCharArr, i, sCharArr.length - i);
         }
-        return new String(arr);
+        return new String(sCharArr);
     }
-    void reverse(char[] arr, int start, int len) {
-        int i = start, j = start + len - 1;
-        while (i < j) {
-            arr[i] ^= arr[j];
-            arr[j] ^= arr[i];
-            arr[i++] ^= arr[j--];
+
+    void reverseSegment(char[] arr, int start, int len) {
+        for (int i = 0; i < len / 2; i++) {
+            char tmp = arr[start + i];
+            arr[start + i] = arr[start + len - 1 - i];
+            arr[start + len - 1 - i] = tmp;
         }
     }
 }
