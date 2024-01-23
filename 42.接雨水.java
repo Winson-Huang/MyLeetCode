@@ -9,7 +9,7 @@
 
 class Solution {
     public int trap(int[] height) {
-        return trapDp(height);
+        return trapDpTwoPointer(height);
     }
     
     // just dp
@@ -26,6 +26,27 @@ class Solution {
         }
         for (int i = 0; i < height.length; i++) {
             sum += Math.min(leftMax[i], rightMax[i]) - height[i];
+        }
+        return sum;
+    }
+    
+    // two pointer, is a variant of dp, but can save space from O(n) to O(1)
+    public int trapDpTwoPointer(int[] height) {
+        int sum = 0;
+        int leftMax = height[0];
+        int rightMax = height[height.length - 1];
+        int leftPointer = 0, rightPointer = height.length - 1;
+        while (leftPointer < rightPointer) {
+            if (leftMax < rightMax) {
+                sum += leftMax - height[leftPointer];
+                leftPointer++;
+                leftMax = Math.max(leftMax, height[leftPointer]);
+            }
+            else {
+                sum += rightMax - height[rightPointer];
+                rightPointer--;
+                rightMax = Math.max(rightMax, height[rightPointer]);
+            }
         }
         return sum;
     }
