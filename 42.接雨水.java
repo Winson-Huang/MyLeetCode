@@ -8,8 +8,11 @@
 
 
 class Solution {
+    // 在本仓库中，解法应该尽量清晰，时空复杂度只需要 big O 等价即可，一些小的，影响可读性，
+    // 影响逻辑的直白的优化，应该完全避免。
     public int trap(int[] height) {
-        return trapDpTwoPointer(height);
+        // return trapDpTwoPointer(height);
+        return trapMonoticStack(height);
     }
     
     // just dp
@@ -48,6 +51,41 @@ class Solution {
                 rightMax = Math.max(rightMax, height[rightPointer]);
             }
         }
+        return sum;
+    }
+    
+    // In this solution, outer iteration is popin, while inner iteration is popup
+    // not better in space or time but just interesting.
+    public int trapMonoticStack(int[] height) {
+        // use an array to simulate a stack, the top is at right.
+        // the stack stores element indices of height
+        int[] stack = new int[height.length];
+        int stackTopPointer = -1;
+        
+        int sum = 0;
+        for (int i = 0; i < height.length; i++) {
+            // popup case
+            while (stackTopPointer >= 0 && height[i] >= height[stack[stackTopPointer]]) {
+                // if there is only one element in stack, no need to calculate
+                // water, just pop up.
+                if (stackTopPointer == 0) {
+                    stackTopPointer--;
+                    break;
+                }
+                
+                // else, need to calculate water
+                // store some indices when pop up, for following calc
+                int indexAtTop = stack[stackTopPointer--];
+                int indexAtTopLeft = stack[stackTopPointer];
+                
+                sum += (i - indexAtTopLeft - 1) * 
+                    (Math.min(height[i], height[indexAtTopLeft]) - height[indexAtTop]);
+            }
+            
+            // pushin case
+            stack[++stackTopPointer] = i;
+        }
+        
         return sum;
     }
     
