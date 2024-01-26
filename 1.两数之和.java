@@ -10,17 +10,26 @@ import java.util.Map;
 // @lc code=start
 class Solution {
     public int[] twoSum(int[] nums, int target) {
+        return twoSumHash(nums, target);
+    }
+
+    int[] twoSumHash(int[] nums, int target) {
         int[] ans = new int[2];
-        Map<Integer, Integer> indexMap = new HashMap<>();
+        
+        Map<Integer, Integer> valueToIndex = new HashMap<>();
+        // just one scan, and ans[0] will not be same to ans[1]
         for (int i = 0; i < nums.length; i++) {
             int another = target - nums[i];
-            if (indexMap.containsKey(another)) {
+            if (valueToIndex.containsKey(another)) {
                 ans[0] = i;
-                ans[1] = indexMap.get(another);
+                ans[1] = valueToIndex.get(another);
                 break;
             }
-            indexMap.put(nums[i], i);
+
+            valueToIndex.put(nums[i], i);
         }
+
+
         return ans;
     }
 }
