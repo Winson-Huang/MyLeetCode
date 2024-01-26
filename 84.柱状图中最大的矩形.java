@@ -12,30 +12,39 @@ import java.util.Deque;
 
 class Solution {
     public int largestRectangleArea(int[] heights) {
+        return largestRectangleAreaMonotonicStack(heights);
+    }
+    
+    int largestRectangleAreaMonotonicStack(int[] height) {
         // monotonic stack one time scan
-
-        Deque<Integer> stack = new ArrayDeque<>();
-        int[] indexRight = new int[heights.length];
-        Arrays.fill(indexRight, heights.length);
-        int[] indexLeft = new int[heights.length];
+        
+        // get index of first lower element in left (indexLeft) and first non-higher element in right (indexRight) using
+        // monotonic stack
+        Deque<Integer> monotonicStack = new ArrayDeque<>();
+        
+        // prepare arrays
+        int[] indexLeft = new int[height.length];
+        int[] indexRight = new int[height.length];
         Arrays.fill(indexLeft, -1);
-
-        for (int i = 0; i < heights.length; i++) {
-            while (!stack.isEmpty() && heights[stack.peek()] > heights[i]) {
-                indexRight[stack.peek()] = i;
-                stack.pop();
+        Arrays.fill(indexRight, height.length);
+        
+        // monotonic push and pop
+        for (int i = 0; i < height.length; i++) {
+            while (!monotonicStack.isEmpty() && height[monotonicStack.peek()] >= height[i]) {
+                indexRight[monotonicStack.pop()] = i;
             }
-            indexLeft[i] = stack.isEmpty() ? -1 : stack.peek();
-            stack.push(i);
+            indexLeft[i] = monotonicStack.isEmpty() ? -1 : monotonicStack.peek();
+            monotonicStack.push(i);
         }
 
+        // get max area
         int maxArea = 0;
-        for (int i = 0; i < indexLeft.length; i++) {
-            maxArea = Math.max(maxArea, (indexRight[i] - indexLeft[i] - 1) * heights[i]);
+        for (int i = 0; i < height.length; i++) {
+            maxArea = Math.max(maxArea, height[i] * (indexRight[i] - indexLeft[i] - 1));
         }
-
         return maxArea;
     }
+    
 }
 // @lc code=end
 

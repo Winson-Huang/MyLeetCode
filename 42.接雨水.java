@@ -12,7 +12,7 @@ class Solution {
     // 影响逻辑的直白的优化，应该完全避免。
     public int trap(int[] height) {
         // return trapDpTwoPointer(height);
-        return trapMonoticStack(height);
+        return trapMonotonicStack(height);
     }
     
     // just dp
@@ -56,7 +56,7 @@ class Solution {
     
     // In this solution, outer iteration is popin, while inner iteration is popup
     // not better in space or time but just interesting.
-    public int trapMonoticStack(int[] height) {
+    public int trapMonotonicStack(int[] height) {
         // use an array to simulate a stack, the top is at right.
         // the stack stores element indices of height
         int[] stack = new int[height.length];
