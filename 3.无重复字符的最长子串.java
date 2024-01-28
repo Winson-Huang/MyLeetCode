@@ -30,10 +30,10 @@ class Solution {
             // if last index of current charactor key is in the window, it means there is a duplicated char in window now.
             if (lastIndex.containsKey(cToProc) && lastIndex.get(cToProc) > windowLeft) {
                 windowLeft = lastIndex.get(cToProc);
-                ans = Math.max(ans, windowRight - windowLeft);
             }
 
             lastIndex.put(cToProc, windowRight);
+            ans = Math.max(ans, windowRight - windowLeft);
         }
 
         return ans;
