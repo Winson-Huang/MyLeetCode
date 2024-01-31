@@ -13,25 +13,33 @@ import java.util.List;
 
 class Solution {
     public int[][] merge(int[][] intervals) {
-        Arrays.sort(intervals, Comparator.comparingInt(o -> o[0]));
+        return mergeSimulate(intervals);
+    }
 
-        // [left, right] is a candidate interval in result
+    int[][] mergeSimulate(int[][] intervals) {
+        // from leetcode official
+        List<int[]> ans = new ArrayList<>();
+        
+        // sort intervals according to first element
+        Arrays.sort(intervals, Comparator.comparingInt(interval -> interval[0]));
+        
+        // merge overlapped intervals
         int left = intervals[0][0];
         int right = intervals[0][1];
-
-        List<int[]> result = new ArrayList<>();
         for (int i = 1; i < intervals.length; i++) {
-            if (intervals[i][0] > right) {
-                result.add(new int[] {left, right});
+            if (intervals[i][0] <= right) {
+                right = Math.max(right, intervals[i][1]);
+            } else {
+                ans.add(new int[]{left, right});
                 left = intervals[i][0];
                 right = intervals[i][1];
-            } else {
-                right = Math.max(right, intervals[i][1]);
             }
         }
-
-        result.add(new int[] {left, right});
-        return result.toArray(new int[0][]);
+        // don't forget last one
+        ans.add(new int[]{left, right});
+        
+        
+        return ans.toArray(new int[0][]);
     }
 }
 // @lc code=end
