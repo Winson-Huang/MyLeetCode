@@ -7,22 +7,32 @@
 // @lc code=start
 class Solution {
     public int firstMissingPositive(int[] nums) {
+        
+        // from leetcode official
         int max = nums.length;
+
+        // restore elements
         for (int i = 0; i < nums.length; i++) {
-            while (nums[i] > 0 && nums[i] <= max && nums[i] != nums[nums[i] - 1]) {
-                int tmp = nums[nums[i] - 1];
-                nums[nums[i] - 1] = nums[i];
+            int x = nums[i];
+            while ((x > 0 && x <= max) && nums[x - 1] != x) {
+                int tmp = nums[x - 1];
+                nums[x - 1] = nums[i];
                 nums[i] = tmp;
+                
+                x = nums[i];
             }
         }
-        int answer = max + 1;
+        
+        // scan for answer
+        int ans = nums.length + 1;
         for (int i = 0; i < nums.length; i++) {
             if (nums[i] != i + 1) {
-                answer = i + 1;
+                ans = i + 1;
                 break;
             }
         }
-        return answer;
+        return ans;
+
     }
 }
 // @lc code=end
