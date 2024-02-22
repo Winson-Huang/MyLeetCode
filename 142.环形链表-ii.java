@@ -18,10 +18,11 @@
  */
 public class Solution {
     public ListNode detectCycle(ListNode head) {
+        // from leetcode official
+        
         if (head == null) return null;
-        // 保证 slow 和 fast 的起始位置相同
-        ListNode slow = head;
-        ListNode fast = head;
+
+        ListNode slow = head, fast = head;
         while (fast != null && fast.next != null) {
             fast = fast.next.next;
             slow = slow.next;
@@ -34,9 +35,8 @@ public class Solution {
                 return probe;
             }
         }
-
+        
         return null;
-
     }
 }
 // @lc code=end
