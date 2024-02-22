@@ -17,9 +17,10 @@
  */
 class Solution {
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
-        return mergeTwoListsIteration(list1, list2);
+        return mergeTwoListsRecursion(list1, list2);
     }
-
+    
+    // from leetcode official
     ListNode mergeTwoListsIteration(ListNode list1, ListNode list2) {
         ListNode prehead = new ListNode(-1);
         ListNode cur = prehead;
@@ -40,6 +41,23 @@ class Solution {
         return prehead.next;
     }
 
+    // from leetcode official
+    ListNode mergeTwoListsRecursion(ListNode list1, ListNode list2) {
+        
+        // base case
+        if (list1 == null) return list2;
+        if (list2 == null) return list1;
+        
+        // recursion
+        if (list1.val <= list2.val) {
+            list1.next = mergeTwoListsRecursion(list1.next, list2);
+            return list1;
+        } else {
+            list2.next = mergeTwoListsRecursion(list2.next, list1);
+            return list2;
+        }
+
+    }
 }
 // @lc code=end
 
