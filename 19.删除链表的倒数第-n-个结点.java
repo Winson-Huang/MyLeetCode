@@ -5,6 +5,10 @@
  */
 
 // @lc code=start
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 /**
  * Definition for singly-linked list.
  * public class ListNode {
@@ -17,6 +21,10 @@
  */
 class Solution {
     public ListNode removeNthFromEnd(ListNode head, int n) {
+        return removeNthFromEndStack(head, n);
+    }
+
+    ListNode removeNthFromEndIteration(ListNode head, int n) {
         // if need delete an item, having a dummy is helpful
         ListNode dummy = new ListNode(-1, head);
 
@@ -33,6 +41,27 @@ class Solution {
             tmpPre = tmpPre.next;
         }
         tmpPre.next = tmpPre.next.next;
+
+        return dummy.next;
+    }
+
+    ListNode removeNthFromEndStack(ListNode head, int n) {
+        
+        Deque<ListNode> stack = new ArrayDeque<>();
+        ListNode dummy = new ListNode(-1, head);
+        ListNode cur = dummy;
+
+        while (cur != null) {
+            stack.offerLast(cur);
+            cur = cur.next;
+        }
+        
+        for (int i = 0; i < n; i++) {
+            stack.pollLast();
+        }
+        
+        ListNode preDel = stack.peekLast();
+        preDel.next = preDel.next.next;
 
         return dummy.next;
     }
