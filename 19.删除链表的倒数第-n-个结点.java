@@ -21,8 +21,11 @@ import java.util.Deque;
  */
 class Solution {
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        return removeNthFromEndStack(head, n);
+        return removeNthFromEndIteration(head, n);
     }
+    /**
+     * 该题目的评论区提供了一种递归解法，但需要为 class 添加一个 index 属性记录节点下标。
+     */
 
     ListNode removeNthFromEndIteration(ListNode head, int n) {
         // if need delete an item, having a dummy is helpful
