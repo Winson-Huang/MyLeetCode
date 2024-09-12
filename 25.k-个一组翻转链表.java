@@ -19,17 +19,18 @@ import java.util.Deque;
  *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
-//  class ListNode {
-//      int val;
-//      ListNode next;
-//      ListNode() {}
-//      ListNode(int val) { this.val = val; }
-//      ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-//  }
+ // class ListNode {
+ //     int val;
+ //     ListNode next;
+ //     ListNode() {}
+ //     ListNode(int val) { this.val = val; }
+ //     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ // }
 class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
         // return reverseKGroupTwoPointers(head, k);
-        return reverseKGroupStack(head, k);
+        // return reverseKGroupStack(head, k);
+        return reverseKGroupRecursion(head, k);
     }
 
     public ListNode reverseKGroupTwoPointers(ListNode head, int k) {
@@ -100,7 +101,29 @@ class Solution {
     }
 
     public ListNode reverseKGroupRecursion(ListNode head, int k) {
-        return head;
+        ListNode node = head;
+        int i;
+        for (i = 0; i < k && node != null; i++) {
+            node = node.next;
+        }
+        if (i == k) {
+            ListNode nextHead = node;
+
+            ListNode pre = null;
+            node = head;
+            // linked list reversion
+            for (i = 0; i < k; i++) {
+                ListNode next = node.next;
+                node.next = pre;
+                pre = node;
+                node = next;
+            }
+            // now, head is the tail of this segment
+            head.next = reverseKGroupRecursion(nextHead, k);
+            return pre;
+        } else {
+            return head;
+        }
     }
 }
 // @lc code=end
