@@ -5,6 +5,10 @@
  */
 
 // @lc code=start
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 /**
  * Definition for singly-linked list.
  * public class ListNode {
@@ -15,9 +19,17 @@
  *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
+//  class ListNode {
+//      int val;
+//      ListNode next;
+//      ListNode() {}
+//      ListNode(int val) { this.val = val; }
+//      ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+//  }
 class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
-        return reverseKGroupTwoPointers(head, k);
+        // return reverseKGroupTwoPointers(head, k);
+        return reverseKGroupStack(head, k);
     }
 
     public ListNode reverseKGroupTwoPointers(ListNode head, int k) {
@@ -58,10 +70,33 @@ class Solution {
         return tail;
     }
 
-    
-
     public ListNode reverseKGroupStack(ListNode head, int k) {
-        return head;
+
+        // this problem is a combination of "linked list reversion" and 
+        // "linked list iteraion"
+        ListNode dummy = new ListNode(0, head);
+        // preHead will be updated iteratively
+        ListNode preHead = dummy;
+        ListNode node = head;
+        Deque<ListNode> stack = new ArrayDeque<>();
+        while (node != null) {
+            int i = 0;
+            for (i = 0; i < k && node != null; i++) {
+                stack.push(node);
+                node = node.next;
+            }
+            // now, nodes between preHead(ex) and node(ex) should be reversed
+            if (i == k) {
+                for (i = 0; i < k; i++) {
+                    preHead.next = stack.pop();
+                    preHead = preHead.next;
+                }
+                preHead.next = node;
+            } else {
+                break;
+            }
+        }
+        return dummy.next;
     }
 
     public ListNode reverseKGroupRecursion(ListNode head, int k) {
